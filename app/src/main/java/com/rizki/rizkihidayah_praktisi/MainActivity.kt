@@ -3,44 +3,39 @@ package com.rizki.rizkihidayah_praktisi
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.rizki.rizkihidayah_praktisi.ui.theme.RizkiHidayah_PRAKTISITheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.rizki.rizkihidayah_praktisi.screen.Home
+import com.rizki.rizkihidayah_praktisi.screen.Profile
+import com.rizki.rizkihidayah_praktisi.screen.Setting
+
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Hello(firstName = " Rizki", lastName = " Rizki Hidayah")
         }
     }
 }
 
 @Composable
-fun Hello(firstName: String, lastName: String, modifier: Modifier = Modifier) {
-    Column (
-        Modifier
-            .padding(all = 40.dp)
-            .background(Color.Red) ) {
-        Text("Hello $firstName")
-        Text("Hello $lastName")
+fun ScreenMain() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = Routes.Home.route) {
+        composable(Routes.Home.route) {
+            Home(navController = navController)
+        }
+        composable(Routes.Profile.route) {
+            Profile()
+        }
+        composable(Routes.Setting.route + "/{no}") { navBackStack ->
+            val number = navBackStack.arguments?.getString("no")
+            Setting(number = number)
+        }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    RizkiHidayah_PRAKTISITheme{
-        Hello("Rizki", "Rizki Hidayah")
-    }
-}
+
